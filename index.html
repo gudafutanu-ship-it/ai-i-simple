@@ -4,95 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>AI×I</title>
- <link rel="manifest" href="manifest-v2.json">
 
-<meta name="theme-color" content="#4f46e5">
+  <link rel="manifest" href="manifest-v2.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icon_new-192.png">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-<link rel="apple-touch-icon" href="icon_new-192.png">
   <style>
     :root {
       --bg: #f5f7fb;
       --card: #ffffff;
+      --text: #222;
+      --sub: #666;
       --line: #e5e7eb;
-      --text: #1f2937;
-      --sub: #6b7280;
-      --primary: #4f46e5;
-      --primary-dark: #4338ca;
-      --ok: #059669;
-      --warn: #b45309;
-      --danger: #dc2626;
-      --assistant: #eef2ff;
-      --user: #f9fafb;
+      --accent: #4f46e5;
+      --accent2: #4338ca;
+      --soft: #fafafa;
+      --good: #eef2ff;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
       font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
-      padding: 16px;
+      background: var(--bg);
+      margin: 0;
+      color: var(--text);
     }
 
     .container {
-      max-width: 980px;
+      max-width: 860px;
       margin: 0 auto;
+      padding: 16px;
     }
 
-    .hero {
+    h1 {
       text-align: center;
-      margin-bottom: 14px;
-    }
-
-    .hero h1 {
-      margin: 8px 0 4px;
-      font-size: 34px;
+      margin: 10px 0 4px;
+      font-size: 32px;
     }
 
     .subtitle {
+      text-align: center;
       color: var(--sub);
-      font-size: 15px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 14px;
+      margin-bottom: 16px;
+      font-size: 14px;
     }
 
     .card {
       background: var(--card);
-      border-radius: 18px;
+      border-radius: 16px;
       padding: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-      border: 1px solid rgba(0,0,0,0.03);
       margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
 
     .section-title {
       font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 12px;
+      font-weight: bold;
+      margin-bottom: 12px;
     }
 
     .label {
       display: block;
-      font-size: 13px;
-      color: var(--sub);
+      font-size: 14px;
+      color: #555;
       margin-bottom: 6px;
-      font-weight: 700;
     }
 
     input, select, textarea, button {
       width: 100%;
+      box-sizing: border-box;
       font-size: 16px;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      padding: 12px 13px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
       margin-bottom: 10px;
       font-family: inherit;
     }
@@ -100,55 +89,99 @@
     textarea {
       min-height: 120px;
       resize: vertical;
-      line-height: 1.65;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: 2px solid rgba(79, 70, 229, 0.18);
-      border-color: var(--primary);
     }
 
     button {
-      background: var(--primary);
-      color: #fff;
+      background: var(--accent);
+      color: white;
       border: none;
       cursor: pointer;
-      font-weight: 700;
-      transition: transform 0.05s ease, opacity 0.2s ease, background 0.2s ease;
+      font-weight: bold;
     }
 
-    button:hover { background: var(--primary-dark); }
-    button:active { transform: translateY(1px); }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    button:hover {
+      background: var(--accent2);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
 
     .secondary-btn {
-      background: #eef2ff;
-      color: var(--primary-dark);
-      border: 1px solid #c7d2fe;
+      background: #64748b;
     }
 
     .secondary-btn:hover {
-      background: #e0e7ff;
-    }
-
-    .danger-btn {
-      background: #fff1f2;
-      color: var(--danger);
-      border: 1px solid #fecdd3;
-    }
-
-    .danger-btn:hover {
-      background: #ffe4e6;
+      background: #475569;
     }
 
     .ghost-btn {
-      background: #f9fafb;
-      color: #374151;
-      border: 1px solid #e5e7eb;
+      background: #eef2ff;
+      color: #312e81;
     }
 
     .ghost-btn:hover {
-      background: #f3f4f6;
+      background: #e0e7ff;
+    }
+
+    .message {
+      color: #555;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .chat-box {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 180px;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .result-block {
+      white-space: pre-wrap;
+      line-height: 1.7;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 60px;
+    }
+
+    .score-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .score-item {
+      background: var(--good);
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .score-label {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .score-value {
+      font-size: 26px;
+      font-weight: bold;
+      color: #312e81;
     }
 
     .row {
@@ -163,431 +196,269 @@
       gap: 10px;
     }
 
-    .button-row {
+    .btn-row {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
-    .button-row-3 {
+    .btn-row-3 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
     }
 
-    .chat-box {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #fcfcfd;
-      min-height: 280px;
-      max-height: 560px;
-      overflow-y: auto;
-      padding: 12px;
-    }
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 28px;
+      }
 
-    .bubble {
-      padding: 12px 14px;
-      border-radius: 16px;
-      margin-bottom: 10px;
-      line-height: 1.75;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .bubble.assistant {
-      background: var(--assistant);
-      border-top-left-radius: 6px;
-    }
-
-    .bubble.user {
-      background: var(--user);
-      border: 1px solid var(--line);
-      border-top-right-radius: 6px;
-    }
-
-    .bubble-label {
-      font-size: 12px;
-      color: var(--sub);
-      margin-bottom: 4px;
-      font-weight: 700;
-    }
-
-    .message {
-      font-size: 14px;
-      color: var(--sub);
-      white-space: pre-wrap;
-      min-height: 22px;
-    }
-
-    .small {
-      font-size: 13px;
-      color: var(--sub);
-    }
-
-    .result-block {
-      border: 1px solid var(--line);
-      background: #fafafa;
-      border-radius: 14px;
-      padding: 12px;
-      min-height: 76px;
-      white-space: pre-wrap;
-      line-height: 1.75;
-    }
-
-    .score-board {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .score-item {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      background: #fafafa;
-      text-align: center;
-    }
-
-    .score-item .num {
-      font-size: 26px;
-      font-weight: 800;
-      color: var(--primary-dark);
-      margin-top: 4px;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: var(--primary-dark);
-      font-size: 13px;
-      border: 1px solid #c7d2fe;
-    }
-
-    .toggle-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #374151;
-      background: #fafafa;
-      border: 1px solid var(--line);
-      padding: 10px 12px;
-      border-radius: 12px;
-    }
-
-    .toggle input {
-      width: auto;
-      margin: 0;
-      accent-color: var(--primary);
-    }
-
-    .progress-wrap {
-      margin-top: 6px;
-      margin-bottom: 10px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 10px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #4f46e5, #818cf8);
-      transition: width 0.25s ease;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: var(--sub);
-      font-size: 12px;
-      margin-top: 8px;
-    }
-
-    @media (max-width: 860px) {
-      .grid, .row, .row-3, .button-row, .button-row-3, .score-board {
+      .row,
+      .row-3,
+      .btn-row,
+      .btn-row-3,
+      .score-box {
         grid-template-columns: 1fr;
       }
 
-      body {
+      .container {
         padding: 12px;
+      }
+
+      .card {
+        padding: 14px;
+      }
+
+      input, select, textarea, button {
+        font-size: 16px;
       }
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <div class="hero">
-    <h1>AI×I</h1>
-    <div class="subtitle">対話型・音声対応・成長が見える英会話アプリ</div>
-  </div>
 
-  <div class="grid">
-    <div>
-      <div class="card">
-        <div class="section-title">設定</div>
+  <h1>AI×I</h1>
+  <div class="subtitle">対話型・発展版英会話アプリ</div>
 
-        <label class="label">パスコード</label>
-        <input id="passcodeInput" type="password" placeholder="配布されたパスコードを入力" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+  <div class="card">
+    <div class="section-title">設定</div>
 
-        <div class="row">
-          <div>
-            <label class="label">シナリオ</label>
-            <select id="scenarioSelect">
-              <option value="free">自由テーマ</option>
-              <option value="restaurant">レストラン</option>
-              <option value="travel">旅行</option>
-              <option value="hotel">ホテル</option>
-              <option value="airport">空港</option>
-              <option value="school">学校</option>
-              <option value="shopping">買い物</option>
-              <option value="baseball">野球</option>
-              <option value="hospital">病院</option>
-              <option value="job_interview">面接</option>
-            </select>
-          </div>
-          <div>
-            <label class="label">会話の形</label>
-            <select id="roleModeSelect">
-              <option value="ai_asks" selected>AIが質問して私が答える</option>
-              <option value="user_asks">私が質問してAIが答える</option>
-            </select>
-          </div>
-        </div>
+    <label class="label">パスコード</label>
+    <input
+      id="passcodeInput"
+      type="password"
+      placeholder="配布されたパスコードを入力"
+      autocomplete="off"
+      autocapitalize="off"
+      autocorrect="off"
+      spellcheck="false"
+    >
 
-        <div class="row">
-          <div>
-            <label class="label">英語レベル</label>
-            <select id="levelSelect">
-              <option value="Oxford1000">Oxford1000</option>
-              <option value="Oxford2000" selected>Oxford2000</option>
-              <option value="Oxford3000">Oxford3000</option>
-            </select>
-          </div>
-          <div>
-            <label class="label">音声</label>
-            <select id="voiceSelect">
-              <option value="auto">自動</option>
-            </select>
-          </div>
-        </div>
+    <label class="label">テーマ</label>
+    <input id="topicInput" type="text" placeholder="例：baseball" value="baseball">
 
-        <label class="label">テーマ</label>
-        <input id="topicInput" type="text" placeholder="例：baseball / ordering food / school festival" value="baseball">
-
-        <div class="toggle-row">
-          <label class="toggle"><input type="checkbox" id="autoSpeakCheck" checked> AIの返答を自動で読む</label>
-          <label class="toggle"><input type="checkbox" id="saveHistoryCheck" checked> ブラウザに会話を保存</label>
-        </div>
-
-        <div class="button-row">
-          <button id="startBtn">会話を始める</button>
-          <button id="continueBtn" class="secondary-btn">前回の続き</button>
-        </div>
-
-        <div class="button-row-3">
-          <button id="nextBtn" class="ghost-btn" disabled>次のシーンへ</button>
-          <button id="summaryBtn" class="ghost-btn" disabled>今日はここまで</button>
-          <button id="resetBtn" class="danger-btn">会話をリセット</button>
-        </div>
-
-        <div class="progress-wrap">
-          <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-        </div>
-        <div id="startMessage" class="message"></div>
+    <div class="row-3">
+      <div>
+        <label class="label">会話の形</label>
+        <select id="roleModeSelect">
+          <option value="ai_asks" selected>AIが質問して私が答える</option>
+          <option value="user_asks">私が質問してAIが答える</option>
+        </select>
       </div>
 
-      <div class="card">
-        <div class="section-title">会話</div>
-        <div id="chatBox" class="chat-box">ここに会話が表示されます。</div>
+      <div>
+        <label class="label">英語レベル</label>
+        <select id="levelSelect">
+          <option value="Oxford1000">Oxford1000</option>
+          <option value="Oxford2000" selected>Oxford2000</option>
+          <option value="Oxford3000">Oxford3000</option>
+        </select>
       </div>
 
-      <div class="card">
-        <div class="section-title">あなたの入力</div>
-        <textarea id="userMessageInput" placeholder="ここに英語を書いて送信します。マイク入力も使えます。"></textarea>
-
-        <div class="button-row-3">
-          <button id="sendBtn" disabled>送信する</button>
-          <button id="micBtn" class="secondary-btn">🎤 マイク入力</button>
-          <button id="readUserBtn" class="ghost-btn">🔊 自分の文を読む</button>
-        </div>
-
-        <div class="small">Enterで送信 / Shift+Enterで改行</div>
-        <div id="sendMessageText" class="message"></div>
+      <div>
+        <label class="label">シナリオ</label>
+        <select id="scenarioSelect">
+          <option value="">指定なし</option>
+          <option value="restaurant">restaurant</option>
+          <option value="airport">airport</option>
+          <option value="hotel">hotel</option>
+          <option value="school">school</option>
+          <option value="shopping">shopping</option>
+          <option value="hospital">hospital</option>
+          <option value="baseball">baseball</option>
+          <option value="travel">travel</option>
+        </select>
       </div>
     </div>
 
-    <div>
-      <div class="card">
-        <div class="section-title">今回の評価</div>
-        <div class="score-board">
-          <div class="score-item">
-            <div class="small">Score</div>
-            <div id="scoreText" class="num">--</div>
-          </div>
-          <div class="score-item">
-            <div class="small">CEFR</div>
-            <div id="cefrText" class="num">--</div>
-          </div>
-          <div class="score-item">
-            <div class="small">Streak</div>
-            <div id="streakText" class="num">0</div>
-          </div>
-        </div>
+    <div class="small">
+      例：baseball / travel / school / restaurant
+    </div>
 
-        <div class="small">先生コメント</div>
-        <div id="coachComment" class="result-block">ここに表示されます。</div>
+    <div class="btn-row">
+      <button id="startBtn">会話を始める</button>
+      <button id="continueBtn" class="secondary-btn" type="button">前回の続き</button>
+    </div>
 
-        <div class="small" style="margin-top:10px;">学習ポイント</div>
-        <div id="focusPoints" class="pill-row">
-          <span class="pill">ここに表示されます。</span>
-        </div>
+    <div id="startMessage" class="message"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">会話</div>
+    <div id="chatBox" class="chat-box">ここに会話が表示されます。</div>
+
+    <div class="btn-row" style="margin-top:10px;">
+      <button id="speakBtn" type="button" class="ghost-btn">🔊 AIの英語を聞く</button>
+      <button id="summaryBtn" type="button" class="ghost-btn">今日のまとめ</button>
+    </div>
+
+    <div id="summaryBox" class="result-block" style="margin-top:10px;">ここにまとめが表示されます。</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">あなたの入力</div>
+    <textarea id="userMessageInput" placeholder="ここに英語を書いて送信します。"></textarea>
+
+    <div class="btn-row-3">
+      <button id="micBtn" type="button" class="ghost-btn">🎤 音声入力</button>
+      <button id="sendBtn" disabled>送信する</button>
+      <button id="clearBtn" type="button" class="secondary-btn">会話を消す</button>
+    </div>
+
+    <div class="small">Enterで送信 / Shift+Enterで改行</div>
+    <div id="sendMessageText" class="message"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">評価</div>
+    <div class="score-box">
+      <div class="score-item">
+        <div class="score-label">スコア</div>
+        <div id="scoreText" class="score-value">-</div>
       </div>
-
-      <div class="card">
-        <div class="section-title">もっと自然な英語</div>
-        <div id="betterText" class="result-block">ここに表示されます。</div>
-        <div class="button-row" style="margin-top:10px;">
-          <button id="readBetterBtn" class="ghost-btn">🔊 読む</button>
-          <button id="copyBetterBtn" class="ghost-btn">コピー</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">別の言い方</div>
-        <div id="alternativeText" class="result-block">ここに表示されます。</div>
-        <div class="button-row" style="margin-top:10px;">
-          <button id="readAltBtn" class="ghost-btn">🔊 読む</button>
-          <button id="copyAltBtn" class="ghost-btn">コピー</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">日本語訳</div>
-        <div id="translationText" class="result-block">ここに表示されます。</div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">理由（日本語）</div>
-        <div id="reasonText" class="result-block">ここに表示されます。</div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">今日のまとめ</div>
-        <div id="summaryText" class="result-block">まだありません。</div>
+      <div class="score-item">
+        <div class="score-label">CEFR目安</div>
+        <div id="cefrText" class="score-value">-</div>
       </div>
     </div>
   </div>
 
-  <div class="footer-note">PWA対応 / 音声対応 / 会話保存対応</div>
+  <div class="card">
+    <div class="section-title">もっと自然な英語</div>
+    <div id="betterText" class="result-block">ここに表示されます。</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">別の言い方</div>
+    <div id="alternativeText" class="result-block">ここに表示されます。</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">理由（日本語）</div>
+    <div id="reasonText" class="result-block">ここに表示されます。</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">日本語訳</div>
+    <div id="translationText" class="result-block">ここに表示されます。</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">先生コメント</div>
+    <div id="teacherCommentText" class="result-block">ここに表示されます。</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">学習ポイント</div>
+    <div id="studyPointText" class="result-block">ここに表示されます。</div>
+  </div>
+
 </div>
 
 <script>
   const API_URL = "https://ai-i-worker.gudafutanu.workers.dev";
-  const STORAGE_KEY = "aixi_session_v2";
-
-  const SCENARIOS = {
-    free: "",
-    restaurant: "ordering food at a restaurant",
-    travel: "talking during travel",
-    hotel: "checking in at a hotel",
-    airport: "speaking at the airport",
-    school: "talking about school life",
-    shopping: "shopping at a store",
-    baseball: "talking about baseball",
-    hospital: "talking at a hospital",
-    job_interview: "job interview practice"
-  };
 
   let conversationHistory = [];
   let conversationStarted = false;
   let isLoading = false;
   let recognition = null;
   let recognizing = false;
-  let lastAssistantText = "";
-  let sessionStats = { streak: 0, turnCount: 0 };
+  let audioUnlocked = false;
 
   const passcodeInput = document.getElementById("passcodeInput");
-  const scenarioSelect = document.getElementById("scenarioSelect");
   const topicInput = document.getElementById("topicInput");
   const roleModeSelect = document.getElementById("roleModeSelect");
   const levelSelect = document.getElementById("levelSelect");
-  const voiceSelect = document.getElementById("voiceSelect");
-  const autoSpeakCheck = document.getElementById("autoSpeakCheck");
-  const saveHistoryCheck = document.getElementById("saveHistoryCheck");
+  const scenarioSelect = document.getElementById("scenarioSelect");
+
   const startBtn = document.getElementById("startBtn");
   const continueBtn = document.getElementById("continueBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const summaryBtn = document.getElementById("summaryBtn");
-  const resetBtn = document.getElementById("resetBtn");
   const sendBtn = document.getElementById("sendBtn");
+  const clearBtn = document.getElementById("clearBtn");
   const micBtn = document.getElementById("micBtn");
-  const readUserBtn = document.getElementById("readUserBtn");
-  const readBetterBtn = document.getElementById("readBetterBtn");
-  const readAltBtn = document.getElementById("readAltBtn");
-  const copyBetterBtn = document.getElementById("copyBetterBtn");
-  const copyAltBtn = document.getElementById("copyAltBtn");
+  const speakBtn = document.getElementById("speakBtn");
+  const summaryBtn = document.getElementById("summaryBtn");
+
   const startMessage = document.getElementById("startMessage");
   const sendMessageText = document.getElementById("sendMessageText");
   const userMessageInput = document.getElementById("userMessageInput");
   const chatBox = document.getElementById("chatBox");
-  const betterText = document.getElementById("betterText");
-  const alternativeText = document.getElementById("alternativeText");
-  const translationText = document.getElementById("translationText");
-  const reasonText = document.getElementById("reasonText");
-  const coachComment = document.getElementById("coachComment");
-  const focusPoints = document.getElementById("focusPoints");
-  const scoreText = document.getElementById("scoreText");
-  const cefrText = document.getElementById("cefrText");
-  const streakText = document.getElementById("streakText");
-  const summaryText = document.getElementById("summaryText");
-  const progressFill = document.getElementById("progressFill");
+  const summaryBox = document.getElementById("summaryBox");
 
-  function escapeHtml(text) {
-    return String(text || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+  function saveState() {
+    const data = {
+      topic: topicInput.value,
+      roleMode: roleModeSelect.value,
+      level: levelSelect.value,
+      scenario: scenarioSelect.value,
+      history: conversationHistory,
+      started: conversationStarted
+    };
+    localStorage.setItem("aixi_state_v2", JSON.stringify(data));
   }
 
-  function applyScenario() {
-    const val = scenarioSelect.value;
-    if (val !== "free") {
-      topicInput.value = SCENARIOS[val] || "";
+  function loadState() {
+    try {
+      const raw = localStorage.getItem("aixi_state_v2");
+      if (!raw) return false;
+
+      const data = JSON.parse(raw);
+      topicInput.value = data.topic || "";
+      roleModeSelect.value = data.roleMode || "ai_asks";
+      levelSelect.value = data.level || "Oxford2000";
+      scenarioSelect.value = data.scenario || "";
+      conversationHistory = Array.isArray(data.history) ? data.history : [];
+      conversationStarted = !!data.started;
+
+      renderChat();
+      sendBtn.disabled = !conversationStarted;
+      return conversationHistory.length > 0;
+    } catch {
+      return false;
     }
+  }
+
+  function clearState() {
+    localStorage.removeItem("aixi_state_v2");
   }
 
   async function postApi(payload) {
     const passcode = passcodeInput.value.trim();
-    if (!passcode) throw new Error("パスコードを入力してください");
+
+    if (!passcode) {
+      throw new Error("パスコードを入力してください");
+    }
 
     const res = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...payload, passcode })
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ...payload,
+        passcode
+      })
     });
 
     let data = {};
@@ -610,240 +481,106 @@
       return;
     }
 
-    chatBox.innerHTML = conversationHistory.map(item => {
-      const roleClass = item.role === "assistant" ? "assistant" : "user";
-      const label = item.role === "assistant" ? "AI" : "You";
-      return `
-        <div class="bubble ${roleClass}">
-          <div class="bubble-label">${label}</div>
-          <div>${escapeHtml(item.content)}</div>
-        </div>
-      `;
-    }).join("");
+    const lines = conversationHistory.map(item => {
+      if (item.role === "assistant") return "AI: " + item.content;
+      if (item.role === "user") return "You: " + item.content;
+      return item.content;
+    });
 
+    chatBox.textContent = lines.join("\n\n");
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  function setFocusPoints(items) {
-    if (!Array.isArray(items) || !items.length) {
-      focusPoints.innerHTML = '<span class="pill">ここに表示されます。</span>';
-      return;
-    }
-
-    focusPoints.innerHTML = items
-      .slice(0, 6)
-      .map(item => `<span class="pill">${escapeHtml(item)}</span>`)
-      .join("");
-  }
-
   function clearFeedback() {
-    betterText.textContent = "ここに表示されます。";
-    alternativeText.textContent = "ここに表示されます。";
-    translationText.textContent = "ここに表示されます。";
-    reasonText.textContent = "ここに表示されます。";
-    coachComment.textContent = "ここに表示されます。";
-    scoreText.textContent = "--";
-    cefrText.textContent = "--";
-    setFocusPoints([]);
+    document.getElementById("betterText").textContent = "ここに表示されます。";
+    document.getElementById("alternativeText").textContent = "ここに表示されます。";
+    document.getElementById("reasonText").textContent = "ここに表示されます。";
+    document.getElementById("translationText").textContent = "ここに表示されます。";
+    document.getElementById("teacherCommentText").textContent = "ここに表示されます。";
+    document.getElementById("studyPointText").textContent = "ここに表示されます。";
+    document.getElementById("scoreText").textContent = "-";
+    document.getElementById("cefrText").textContent = "-";
+    summaryBox.textContent = "ここにまとめが表示されます。";
   }
 
   function setLoading(loading) {
     isLoading = loading;
     startBtn.disabled = loading;
     continueBtn.disabled = loading;
-    nextBtn.disabled = loading || !conversationStarted;
-    summaryBtn.disabled = loading || !conversationStarted;
     sendBtn.disabled = loading || !conversationStarted;
-    micBtn.disabled = loading;
+    summaryBtn.disabled = loading || !conversationStarted;
+    speakBtn.disabled = loading;
   }
 
-  function updateProgress() {
-    const width = Math.min(sessionStats.turnCount * 12, 100);
-    progressFill.style.width = width + "%";
-    streakText.textContent = String(sessionStats.streak || 0);
-  }
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
 
-  function saveSession() {
-    if (!saveHistoryCheck.checked) return;
-    const payload = {
-      passcode: passcodeInput.value,
-      scenario: scenarioSelect.value,
-      topic: topicInput.value,
-      roleMode: roleModeSelect.value,
-      level: levelSelect.value,
-      conversationHistory,
-      conversationStarted,
-      sessionStats,
-      better: betterText.textContent,
-      alternative: alternativeText.textContent,
-      translation: translationText.textContent,
-      reason: reasonText.textContent,
-      coachComment: coachComment.textContent,
-      score: scoreText.textContent,
-      cefr: cefrText.textContent,
-      summary: summaryText.textContent,
-      focusPills: Array.from(focusPoints.querySelectorAll('.pill')).map(el => el.textContent)
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  }
-
-  function loadSession() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return false;
-      const data = JSON.parse(raw);
-      passcodeInput.value = data.passcode || "";
-      scenarioSelect.value = data.scenario || "free";
-      topicInput.value = data.topic || "";
-      roleModeSelect.value = data.roleMode || "ai_asks";
-      levelSelect.value = data.level || "Oxford2000";
-      conversationHistory = Array.isArray(data.conversationHistory) ? data.conversationHistory : [];
-      conversationStarted = !!data.conversationStarted && conversationHistory.length > 0;
-      sessionStats = data.sessionStats || { streak: 0, turnCount: 0 };
-      renderChat();
-      betterText.textContent = data.better || "ここに表示されます。";
-      alternativeText.textContent = data.alternative || "ここに表示されます。";
-      translationText.textContent = data.translation || "ここに表示されます。";
-      reasonText.textContent = data.reason || "ここに表示されます。";
-      coachComment.textContent = data.coachComment || "ここに表示されます。";
-      scoreText.textContent = data.score || "--";
-      cefrText.textContent = data.cefr || "--";
-      summaryText.textContent = data.summary || "まだありません。";
-      setFocusPoints(Array.isArray(data.focusPills) ? data.focusPills : []);
-      lastAssistantText = getLastAssistantText();
-      updateProgress();
-      sendBtn.disabled = !conversationStarted;
-      nextBtn.disabled = !conversationStarted;
-      summaryBtn.disabled = !conversationStarted;
-      return conversationStarted;
-    } catch {
-      return false;
+      const u = new SpeechSynthesisUtterance(" ");
+      u.volume = 0;
+      u.lang = "en-US";
+      speechSynthesis.speak(u);
+      speechSynthesis.cancel();
+    } catch (e) {
+      console.log("unlockAudio error:", e);
     }
   }
 
-  function resetSession() {
-    conversationHistory = [];
-    conversationStarted = false;
-    sessionStats = { streak: 0, turnCount: 0 };
-    lastAssistantText = "";
-    userMessageInput.value = "";
-    startMessage.textContent = "";
-    sendMessageText.textContent = "";
-    summaryText.textContent = "まだありません。";
-    renderChat();
-    clearFeedback();
-    updateProgress();
-    sendBtn.disabled = true;
-    nextBtn.disabled = true;
-    summaryBtn.disabled = true;
-    localStorage.removeItem(STORAGE_KEY);
-  }
+  function speakEnglish(text) {
+    if (!text) return;
 
-  function getLastAssistantText() {
-    const reversed = [...conversationHistory].reverse();
-    const found = reversed.find(item => item.role === "assistant");
-    return found ? found.content : "";
-  }
+    try {
+      unlockAudio();
+      speechSynthesis.cancel();
 
-  async function speakText(text) {
-    const value = String(text || "").trim();
-    if (!value) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-US";
+      utter.rate = 0.95;
+      utter.pitch = 1.0;
+      utter.volume = 1.0;
 
-    if (!("speechSynthesis" in window)) {
-      alert("このブラウザは音声読み上げに対応していません。");
-      return;
-    }
+      const voices = speechSynthesis.getVoices();
+      const enVoice =
+        voices.find(v => v.lang === "en-US") ||
+        voices.find(v => v.lang.startsWith("en"));
 
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(value);
-    utter.lang = "en-US";
-    utter.rate = 0.95;
-    utter.pitch = 1.0;
-
-    const selectedName = voiceSelect.value;
-    const voices = window.speechSynthesis.getVoices();
-    let voice = null;
-
-    if (selectedName && selectedName !== "auto") {
-      voice = voices.find(v => v.name === selectedName) || null;
-    }
-    if (!voice) {
-      voice = voices.find(v => /^en(-|_)/i.test(v.lang)) || null;
-    }
-    if (voice) utter.voice = voice;
-
-    window.speechSynthesis.speak(utter);
-  }
-
-  function populateVoices() {
-    if (!("speechSynthesis" in window)) return;
-    const voices = window.speechSynthesis.getVoices().filter(v => /^en(-|_)/i.test(v.lang));
-    const current = voiceSelect.value;
-    voiceSelect.innerHTML = '<option value="auto">自動</option>' +
-      voices.map(v => `<option value="${escapeHtml(v.name)}">${escapeHtml(v.name)} (${escapeHtml(v.lang)})</option>`).join("");
-    if (current && Array.from(voiceSelect.options).some(opt => opt.value === current)) {
-      voiceSelect.value = current;
-    }
-  }
-
-  function setupSpeechRecognition() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) {
-      micBtn.disabled = true;
-      micBtn.textContent = "🎤 このブラウザでは不可";
-      return;
-    }
-
-    recognition = new SR();
-    recognition.lang = "en-US";
-    recognition.interimResults = true;
-    recognition.continuous = false;
-
-    recognition.onstart = () => {
-      recognizing = true;
-      micBtn.textContent = "■ 停止";
-      sendMessageText.textContent = "聞き取り中… 英語を話してください。";
-    };
-
-    recognition.onresult = (event) => {
-      let finalText = "";
-      let interimText = "";
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) finalText += transcript + " ";
-        else interimText += transcript + " ";
+      if (enVoice) {
+        utter.voice = enVoice;
       }
-      const current = userMessageInput.value.trim();
-      const merged = (current + " " + finalText + interimText).trim();
-      userMessageInput.value = merged;
-    };
 
-    recognition.onerror = (event) => {
-      sendMessageText.textContent = "マイク入力に失敗しました: " + (event.error || "unknown");
-    };
-
-    recognition.onend = () => {
-      recognizing = false;
-      micBtn.textContent = "🎤 マイク入力";
-      if (!sendMessageText.textContent.includes("失敗")) {
-        sendMessageText.textContent = "マイク入力が終わりました。必要なら文を直して送信してください。";
-      }
-    };
+      speechSynthesis.speak(utter);
+    } catch (e) {
+      console.log("speakEnglish error:", e);
+      alert("音声再生に失敗しました");
+    }
   }
 
-  function toggleMic() {
-    if (!recognition) return;
-    if (recognizing) {
-      recognition.stop();
+  function speakLatestAi() {
+    unlockAudio();
+
+    if (!conversationHistory.length) {
+      alert("まだAIの会話がありません");
       return;
     }
-    recognition.start();
+
+    const lastAi = [...conversationHistory].reverse().find(item => item.role === "assistant");
+
+    if (!lastAi || !lastAi.content) {
+      alert("読み上げるAIメッセージがありません");
+      return;
+    }
+
+    speakEnglish(lastAi.content);
   }
 
   async function startConversation() {
+    unlockAudio();
+
     const topic = topicInput.value.trim();
     const roleMode = roleModeSelect.value;
     const level = levelSelect.value;
+    const scenario = scenarioSelect.value;
 
     if (!topic) {
       startMessage.textContent = "テーマを入力してください。";
@@ -854,31 +591,30 @@
     startMessage.textContent = "会話を作成中…";
     sendMessageText.textContent = "";
     clearFeedback();
-    summaryText.textContent = "まだありません。";
 
     try {
       const data = await postApi({
         action: "start",
         topic,
         roleMode,
-        level
+        level,
+        scenario
       });
 
       conversationHistory = Array.isArray(data.history) ? data.history : [];
       conversationStarted = true;
-      sessionStats = { streak: 0, turnCount: 1 };
       renderChat();
-      updateProgress();
-      lastAssistantText = getLastAssistantText();
+      saveState();
+
       userMessageInput.value = "";
       startMessage.textContent = "会話を始めました。";
-      if (autoSpeakCheck.checked) speakText(lastAssistantText);
-      saveSession();
+      sendBtn.disabled = false;
       userMessageInput.focus();
     } catch (e) {
       conversationStarted = false;
       conversationHistory = [];
       renderChat();
+      clearState();
       startMessage.textContent = "開始に失敗しました。\n" + e.message;
     } finally {
       setLoading(false);
@@ -886,9 +622,12 @@
   }
 
   async function sendMessage() {
+    unlockAudio();
+
     const topic = topicInput.value.trim();
     const roleMode = roleModeSelect.value;
     const level = levelSelect.value;
+    const scenario = scenarioSelect.value;
     const userMessage = userMessageInput.value.trim();
 
     if (!conversationStarted) {
@@ -910,32 +649,41 @@
         topic,
         roleMode,
         level,
+        scenario,
         userMessage,
         history: conversationHistory
       });
 
       conversationHistory = Array.isArray(data.history) ? data.history : conversationHistory;
       renderChat();
+      saveState();
 
-      betterText.textContent = data.betterExpression || "取得できませんでした。";
-      alternativeText.textContent = data.alternativeExpression || "取得できませんでした。";
-      translationText.textContent = data.translationJa || "取得できませんでした。";
-      reasonText.textContent = data.reasonJa || "取得できませんでした。";
-      coachComment.textContent = data.coachComment || "取得できませんでした。";
-      scoreText.textContent = typeof data.score === "number" ? String(data.score) : "--";
-      cefrText.textContent = data.cefrLevel || "--";
-      setFocusPoints(data.focusPoints || []);
+      document.getElementById("betterText").textContent =
+        data.betterExpression || "取得できませんでした。";
 
-      lastAssistantText = getLastAssistantText();
-      sessionStats.streak += 1;
-      sessionStats.turnCount += 1;
-      updateProgress();
+      document.getElementById("alternativeText").textContent =
+        data.alternativeExpression || "取得できませんでした。";
+
+      document.getElementById("reasonText").textContent =
+        data.reasonJa || "取得できませんでした。";
+
+      document.getElementById("translationText").textContent =
+        data.translationJa || "取得できませんでした。";
+
+      document.getElementById("teacherCommentText").textContent =
+        data.teacherCommentJa || "取得できませんでした。";
+
+      document.getElementById("studyPointText").textContent =
+        data.studyPointJa || "取得できませんでした。";
+
+      document.getElementById("scoreText").textContent =
+        (data.score ?? "-");
+
+      document.getElementById("cefrText").textContent =
+        data.cefr || "-";
 
       userMessageInput.value = "";
       sendMessageText.textContent = "送信しました。";
-
-      if (autoSpeakCheck.checked) speakText(lastAssistantText);
-      saveSession();
       userMessageInput.focus();
     } catch (e) {
       sendMessageText.textContent = "送信に失敗しました。\n" + e.message;
@@ -944,95 +692,155 @@
     }
   }
 
-  async function nextScene() {
-    const currentTopic = topicInput.value.trim();
-    if (!currentTopic) {
-      startMessage.textContent = "先にテーマを入れてください。";
-      return;
-    }
-    topicInput.value = currentTopic + " - next situation";
-    await startConversation();
-  }
+  async function makeSummary() {
+    const topic = topicInput.value.trim();
+    const roleMode = roleModeSelect.value;
+    const level = levelSelect.value;
+    const scenario = scenarioSelect.value;
 
-  function makeSummary() {
-    if (!conversationHistory.length) {
-      summaryText.textContent = "まだ会話がありません。";
+    if (!conversationStarted || !conversationHistory.length) {
+      summaryBox.textContent = "会話履歴がありません。";
       return;
     }
 
-    const lastUser = [...conversationHistory].reverse().find(item => item.role === "user");
-    const score = scoreText.textContent || "--";
-    const cefr = cefrText.textContent || "--";
-    const summary = [
-      `今日のテーマ: ${topicInput.value.trim() || "(なし)"}`,
-      `会話回数: ${Math.max(sessionStats.turnCount - 1, 0)}回`,
-      `今回のスコア: ${score}`,
-      `CEFR目安: ${cefr}`,
-      `最後の自分の文: ${lastUser ? lastUser.content : "まだありません"}`,
-      `次に意識すること: ${coachComment.textContent}`
-    ].join("\n");
+    setLoading(true);
+    summaryBox.textContent = "まとめを作成中…";
 
-    summaryText.textContent = summary;
-    saveSession();
-  }
-
-  async function copyText(text) {
     try {
-      await navigator.clipboard.writeText(String(text || ""));
-      sendMessageText.textContent = "コピーしました。";
-    } catch {
-      sendMessageText.textContent = "コピーできませんでした。";
+      const data = await postApi({
+        action: "summary",
+        topic,
+        roleMode,
+        level,
+        scenario,
+        history: conversationHistory
+      });
+
+      const parts = [
+        data.summaryJa ? "【今日のまとめ】\n" + data.summaryJa : "",
+        data.goodPointJa ? "【良かった点】\n" + data.goodPointJa : "",
+        data.nextAdviceJa ? "【次へのアドバイス】\n" + data.nextAdviceJa : "",
+        data.recommendedPhrase ? "【おすすめフレーズ】\n" + data.recommendedPhrase : ""
+      ].filter(Boolean);
+
+      summaryBox.textContent = parts.join("\n\n") || "まとめを作成できませんでした。";
+    } catch (e) {
+      summaryBox.textContent = "まとめ作成に失敗しました。\n" + e.message;
+    } finally {
+      setLoading(false);
     }
   }
 
-  scenarioSelect.addEventListener("change", applyScenario);
-  startBtn.addEventListener("click", startConversation);
-  continueBtn.addEventListener("click", () => {
-    const ok = loadSession();
-    startMessage.textContent = ok ? "前回の会話を復元しました。" : "保存された会話がありません。";
-  });
-  nextBtn.addEventListener("click", nextScene);
-  summaryBtn.addEventListener("click", makeSummary);
-  resetBtn.addEventListener("click", () => {
-    if (confirm("保存した会話も含めてリセットしますか？")) {
-      resetSession();
-      startMessage.textContent = "会話をリセットしました。";
+  function continueConversation() {
+    const ok = loadState();
+    if (ok) {
+      startMessage.textContent = "前回の会話を読み込みました。";
+    } else {
+      startMessage.textContent = "保存された会話がありません。";
     }
-  });
+  }
+
+  function clearConversation() {
+    if (!confirm("会話履歴を消しますか？")) return;
+
+    conversationHistory = [];
+    conversationStarted = false;
+    renderChat();
+    clearFeedback();
+    clearState();
+    userMessageInput.value = "";
+    startMessage.textContent = "会話を消しました。";
+    sendMessageText.textContent = "";
+    sendBtn.disabled = true;
+  }
+
+  function setupSpeechRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SR) {
+      micBtn.disabled = true;
+      micBtn.textContent = "🎤 この端末では未対応";
+      return;
+    }
+
+    recognition = new SR();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      recognizing = true;
+      micBtn.textContent = "🎤 聞いています…";
+      sendMessageText.textContent = "英語を話してください。";
+    };
+
+    recognition.onend = () => {
+      recognizing = false;
+      micBtn.textContent = "🎤 音声入力";
+    };
+
+    recognition.onerror = (event) => {
+      recognizing = false;
+      micBtn.textContent = "🎤 音声入力";
+      sendMessageText.textContent = "音声入力エラー: " + (event.error || "unknown");
+    };
+
+    recognition.onresult = (event) => {
+      const text = event.results?.[0]?.[0]?.transcript || "";
+      if (text) {
+        userMessageInput.value = text;
+        sendMessageText.textContent = "音声入力できました。必要なら直して送信してください。";
+      }
+    };
+  }
+
+  function toggleMic() {
+    unlockAudio();
+
+    if (!recognition) {
+      sendMessageText.textContent = "この端末では音声入力に対応していません。";
+      return;
+    }
+
+    if (recognizing) {
+      recognition.stop();
+      return;
+    }
+
+    try {
+      recognition.start();
+    } catch (e) {
+      sendMessageText.textContent = "音声入力を開始できませんでした。";
+    }
+  }
+
+  startBtn.addEventListener("click", startConversation);
+  continueBtn.addEventListener("click", continueConversation);
   sendBtn.addEventListener("click", sendMessage);
+  clearBtn.addEventListener("click", clearConversation);
   micBtn.addEventListener("click", toggleMic);
-  readUserBtn.addEventListener("click", () => speakText(userMessageInput.value));
-  readBetterBtn.addEventListener("click", () => speakText(betterText.textContent));
-  readAltBtn.addEventListener("click", () => speakText(alternativeText.textContent));
-  copyBetterBtn.addEventListener("click", () => copyText(betterText.textContent));
-  copyAltBtn.addEventListener("click", () => copyText(alternativeText.textContent));
+  speakBtn.addEventListener("click", speakLatestAi);
+  summaryBtn.addEventListener("click", makeSummary);
 
   userMessageInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!isLoading) sendMessage();
+      if (!isLoading) {
+        sendMessage();
+      }
     }
   });
 
-  saveHistoryCheck.addEventListener("change", () => {
-    if (!saveHistoryCheck.checked) {
-      localStorage.removeItem(STORAGE_KEY);
-      startMessage.textContent = "ブラウザ保存をオフにしました。";
-    } else {
-      saveSession();
-      startMessage.textContent = "ブラウザ保存をオンにしました。";
+  window.addEventListener("load", () => {
+    setupSpeechRecognition();
+    loadState();
+    if (conversationStarted) {
+      sendBtn.disabled = false;
+    }
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
     }
   });
-
-  if ("speechSynthesis" in window) {
-    populateVoices();
-    window.speechSynthesis.onvoiceschanged = populateVoices;
-  }
-  setupSpeechRecognition();
-  updateProgress();
-  applyScenario();
-  loadSession();
 </script>
 </body>
 </html>
-
