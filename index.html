@@ -22,11 +22,10 @@
       --accent2: #4338ca;
       --soft: #fafafa;
       --good: #eef2ff;
+      --danger: #b91c1c;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
@@ -99,31 +98,20 @@
       font-weight: bold;
     }
 
-    button:hover {
-      background: var(--accent2);
-    }
+    button:hover { background: var(--accent2); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .secondary-btn {
-      background: #64748b;
-    }
-
-    .secondary-btn:hover {
-      background: #475569;
-    }
+    .secondary-btn { background: #64748b; }
+    .secondary-btn:hover { background: #475569; }
 
     .ghost-btn {
       background: #eef2ff;
       color: #312e81;
     }
+    .ghost-btn:hover { background: #e0e7ff; }
 
-    .ghost-btn:hover {
-      background: #e0e7ff;
-    }
+    .danger-btn { background: var(--danger); }
+    .danger-btn:hover { background: #991b1b; }
 
     .message {
       color: #555;
@@ -208,10 +196,18 @@
       gap: 10px;
     }
 
+    .listening {
+      outline: 3px solid #f59e0b;
+      background: #fff7ed !important;
+      color: #9a3412 !important;
+    }
+
+    .speak-ready {
+      outline: 3px solid #10b981;
+    }
+
     @media (max-width: 700px) {
-      h1 {
-        font-size: 28px;
-      }
+      h1 { font-size: 28px; }
 
       .row,
       .row-3,
@@ -221,17 +217,8 @@
         grid-template-columns: 1fr;
       }
 
-      .container {
-        padding: 12px;
-      }
-
-      .card {
-        padding: 14px;
-      }
-
-      input, select, textarea, button {
-        font-size: 16px;
-      }
+      .container { padding: 12px; }
+      .card { padding: 14px; }
     }
   </style>
 </head>
@@ -239,36 +226,36 @@
 <div class="container">
 
   <h1>AI×I</h1>
-  <div class="subtitle">対話型・発展版英会話アプリ</div>
+  <div class="subtitle">対話型・課題モード入り英会話アプリ</div>
 
   <div class="card">
-    <div class="section-title">設定</div>
+    <div class="section-title">設定 / Settings</div>
 
-    <label class="label">パスコード</label>
+    <label class="label">パスコード / Passcode</label>
     <input
       id="passcodeInput"
       type="password"
-      placeholder="配布されたパスコードを入力"
+      placeholder="配布されたパスコードを入力 / Enter your passcode"
       autocomplete="off"
       autocapitalize="off"
       autocorrect="off"
       spellcheck="false"
     >
 
-    <label class="label">テーマ</label>
-    <input id="topicInput" type="text" placeholder="例：baseball" value="baseball">
+    <label class="label">テーマ / Topic</label>
+    <input id="topicInput" type="text" placeholder="例 / Example: baseball" value="baseball">
 
     <div class="row-3">
       <div>
-        <label class="label">会話の形</label>
+        <label class="label">会話の形 / Conversation Style</label>
         <select id="roleModeSelect">
-          <option value="ai_asks" selected>AIが質問して私が答える</option>
-          <option value="user_asks">私が質問してAIが答える</option>
+          <option value="ai_asks" selected>AIが質問して私が答える / AI asks, I answer</option>
+          <option value="user_asks">私が質問してAIが答える / I ask, AI answers</option>
         </select>
       </div>
 
       <div>
-        <label class="label">英語レベル</label>
+        <label class="label">英語レベル / English Level</label>
         <select id="levelSelect">
           <option value="Oxford1000">Oxford1000</option>
           <option value="Oxford2000" selected>Oxford2000</option>
@@ -277,9 +264,20 @@
       </div>
 
       <div>
-        <label class="label">シナリオ</label>
+        <label class="label">会話モード / Mode</label>
+        <select id="styleModeSelect">
+          <option value="easy">やさしい / Easy</option>
+          <option value="normal" selected>ふつう / Normal</option>
+          <option value="exciting">もりあがる / Exciting</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label class="label">シナリオ / Scenario</label>
         <select id="scenarioSelect">
-          <option value="">指定なし</option>
+          <option value="">指定なし / None</option>
           <option value="restaurant">restaurant</option>
           <option value="airport">airport</option>
           <option value="hotel">hotel</option>
@@ -290,88 +288,99 @@
           <option value="travel">travel</option>
         </select>
       </div>
+
+      <div>
+        <label class="label">課題モード / Mission Mode</label>
+        <select id="missionModeSelect">
+          <option value="off" selected>OFF</option>
+          <option value="on">ON</option>
+        </select>
+      </div>
     </div>
 
+    <label class="label">課題内容 / Mission</label>
+    <textarea id="missionTextInput" placeholder="例 / Example: ホテルでチェックインをして、朝食の時間も聞く。"></textarea>
+
     <div class="small">
-      例：baseball / travel / school / restaurant
+      例 / Examples: baseball / travel / school / restaurant
     </div>
 
     <div class="btn-row">
-      <button id="startBtn">会話を始める</button>
-      <button id="continueBtn" class="secondary-btn" type="button">前回の続き</button>
+      <button id="startBtn">会話を始める / Start</button>
+      <button id="continueBtn" class="secondary-btn" type="button">前回の続き / Continue</button>
     </div>
 
     <div id="startMessage" class="message"></div>
   </div>
 
   <div class="card">
-    <div class="section-title">会話</div>
-    <div id="chatBox" class="chat-box">ここに会話が表示されます。</div>
+    <div class="section-title">会話 / Conversation</div>
+    <div id="chatBox" class="chat-box">ここに会話が表示されます。 / The conversation will appear here.</div>
 
     <div class="btn-row" style="margin-top:10px;">
-      <button id="speakBtn" type="button" class="ghost-btn">🔊 AIの英語を聞く</button>
-      <button id="summaryBtn" type="button" class="ghost-btn">今日のまとめ</button>
+      <button id="speakBtn" type="button" class="ghost-btn">🔊 AIの英語を聞く / Listen</button>
+      <button id="summaryBtn" type="button" class="ghost-btn">今日のまとめ / Summary</button>
     </div>
 
-    <div id="summaryBox" class="result-block" style="margin-top:10px;">ここにまとめが表示されます。</div>
+    <div id="summaryBox" class="result-block" style="margin-top:10px;">ここにまとめが表示されます。 / The summary will appear here.</div>
   </div>
 
   <div class="card">
-    <div class="section-title">あなたの入力</div>
-    <textarea id="userMessageInput" placeholder="ここに英語を書いて送信します。"></textarea>
+    <div class="section-title">あなたの入力 / Your Input</div>
+    <textarea id="userMessageInput" placeholder="ここに英語を書いて送信します。 / Type your English here."></textarea>
 
     <div class="btn-row-3">
-      <button id="micBtn" type="button" class="ghost-btn">🎤 音声入力</button>
-      <button id="sendBtn" disabled>送信する</button>
-      <button id="clearBtn" type="button" class="secondary-btn">会話を消す</button>
+      <button id="micBtn" type="button" class="ghost-btn">🎤 音声入力 / Mic</button>
+      <button id="sendBtn" disabled>送信する / Send</button>
+      <button id="clearBtn" type="button" class="danger-btn">会話を消す / Clear</button>
     </div>
 
-    <div class="small">Enterで送信 / Shift+Enterで改行</div>
+    <div class="small">Enterで送信 / Shift+Enterで改行 - Press Enter to send, Shift+Enter for a new line</div>
     <div id="sendMessageText" class="message"></div>
   </div>
 
   <div class="card">
-    <div class="section-title">評価</div>
+    <div class="section-title">評価 / Evaluation</div>
     <div class="score-box">
       <div class="score-item">
-        <div class="score-label">スコア</div>
+        <div class="score-label">スコア / Score</div>
         <div id="scoreText" class="score-value">-</div>
       </div>
       <div class="score-item">
-        <div class="score-label">CEFR目安</div>
+        <div class="score-label">CEFR目安 / CEFR</div>
         <div id="cefrText" class="score-value">-</div>
       </div>
     </div>
   </div>
 
   <div class="card">
-    <div class="section-title">もっと自然な英語</div>
-    <div id="betterText" class="result-block">ここに表示されます。</div>
+    <div class="section-title">もっと自然な英語 / Better Expression</div>
+    <div id="betterText" class="result-block">ここに表示されます。 / The result will appear here.</div>
   </div>
 
   <div class="card">
-    <div class="section-title">別の言い方</div>
-    <div id="alternativeText" class="result-block">ここに表示されます。</div>
+    <div class="section-title">別の言い方 / Alternative Expression</div>
+    <div id="alternativeText" class="result-block">ここに表示されます。 / The result will appear here.</div>
   </div>
 
   <div class="card">
-    <div class="section-title">理由（日本語）</div>
-    <div id="reasonText" class="result-block">ここに表示されます。</div>
+    <div class="section-title">理由 / Reason</div>
+    <div id="reasonText" class="result-block">ここに表示されます。 / The result will appear here.</div>
   </div>
 
   <div class="card">
-    <div class="section-title">日本語訳</div>
-    <div id="translationText" class="result-block">ここに表示されます。</div>
+    <div class="section-title">日本語訳 / Japanese Translation</div>
+    <div id="translationText" class="result-block">ここに表示されます。 / The result will appear here.</div>
   </div>
 
   <div class="card">
-    <div class="section-title">先生コメント</div>
-    <div id="teacherCommentText" class="result-block">ここに表示されます。</div>
+    <div class="section-title">先生コメント / Teacher Comment</div>
+    <div id="teacherCommentText" class="result-block">ここに表示されます。 / The result will appear here.</div>
   </div>
 
   <div class="card">
-    <div class="section-title">学習ポイント</div>
-    <div id="studyPointText" class="result-block">ここに表示されます。</div>
+    <div class="section-title">学習ポイント / Study Point</div>
+    <div id="studyPointText" class="result-block">ここに表示されます。 / The result will appear here.</div>
   </div>
 
 </div>
@@ -390,7 +399,10 @@
   const topicInput = document.getElementById("topicInput");
   const roleModeSelect = document.getElementById("roleModeSelect");
   const levelSelect = document.getElementById("levelSelect");
+  const styleModeSelect = document.getElementById("styleModeSelect");
   const scenarioSelect = document.getElementById("scenarioSelect");
+  const missionModeSelect = document.getElementById("missionModeSelect");
+  const missionTextInput = document.getElementById("missionTextInput");
 
   const startBtn = document.getElementById("startBtn");
   const continueBtn = document.getElementById("continueBtn");
@@ -406,28 +418,38 @@
   const chatBox = document.getElementById("chatBox");
   const summaryBox = document.getElementById("summaryBox");
 
+  function getMissionModeValue() {
+    return missionModeSelect.value === "on";
+  }
+
   function saveState() {
     const data = {
       topic: topicInput.value,
       roleMode: roleModeSelect.value,
       level: levelSelect.value,
+      styleMode: styleModeSelect.value,
       scenario: scenarioSelect.value,
+      missionMode: missionModeSelect.value,
+      missionText: missionTextInput.value,
       history: conversationHistory,
       started: conversationStarted
     };
-    localStorage.setItem("aixi_state_v2", JSON.stringify(data));
+    localStorage.setItem("aixi_state_v4", JSON.stringify(data));
   }
 
   function loadState() {
     try {
-      const raw = localStorage.getItem("aixi_state_v2");
+      const raw = localStorage.getItem("aixi_state_v4");
       if (!raw) return false;
 
       const data = JSON.parse(raw);
       topicInput.value = data.topic || "";
       roleModeSelect.value = data.roleMode || "ai_asks";
       levelSelect.value = data.level || "Oxford2000";
+      styleModeSelect.value = data.styleMode || "normal";
       scenarioSelect.value = data.scenario || "";
+      missionModeSelect.value = data.missionMode || "off";
+      missionTextInput.value = data.missionText || "";
       conversationHistory = Array.isArray(data.history) ? data.history : [];
       conversationStarted = !!data.started;
 
@@ -440,14 +462,14 @@
   }
 
   function clearState() {
-    localStorage.removeItem("aixi_state_v2");
+    localStorage.removeItem("aixi_state_v4");
   }
 
   async function postApi(payload) {
     const passcode = passcodeInput.value.trim();
 
     if (!passcode) {
-      throw new Error("パスコードを入力してください");
+      throw new Error("パスコードを入力してください / Please enter a passcode.");
     }
 
     const res = await fetch(API_URL, {
@@ -465,11 +487,11 @@
     try {
       data = await res.json();
     } catch {
-      throw new Error("サーバーから正しいJSONが返りませんでした。");
+      throw new Error("サーバーから正しいJSONが返りませんでした。 / The server did not return valid JSON.");
     }
 
     if (!res.ok) {
-      throw new Error(data.detail || data.error || "通信エラーです");
+      throw new Error(data.detail || data.error || "通信エラーです / Communication error.");
     }
 
     return data;
@@ -477,7 +499,7 @@
 
   function renderChat() {
     if (!conversationHistory.length) {
-      chatBox.textContent = "ここに会話が表示されます。";
+      chatBox.textContent = "ここに会話が表示されます。 / The conversation will appear here.";
       return;
     }
 
@@ -487,20 +509,21 @@
       return item.content;
     });
 
-    chatBox.textContent = lines.join("\n\n");
+    chatBox.textContent = lines.join("\\n\\n");
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
   function clearFeedback() {
-    document.getElementById("betterText").textContent = "ここに表示されます。";
-    document.getElementById("alternativeText").textContent = "ここに表示されます。";
-    document.getElementById("reasonText").textContent = "ここに表示されます。";
-    document.getElementById("translationText").textContent = "ここに表示されます。";
-    document.getElementById("teacherCommentText").textContent = "ここに表示されます。";
-    document.getElementById("studyPointText").textContent = "ここに表示されます。";
+    document.getElementById("betterText").textContent = "ここに表示されます。 / The result will appear here.";
+    document.getElementById("alternativeText").textContent = "ここに表示されます。 / The result will appear here.";
+    document.getElementById("reasonText").textContent = "ここに表示されます。 / The result will appear here.";
+    document.getElementById("translationText").textContent = "ここに表示されます。 / The result will appear here.";
+    document.getElementById("teacherCommentText").textContent = "ここに表示されます。 / The result will appear here.";
+    document.getElementById("studyPointText").textContent = "ここに表示されます。 / The result will appear here.";
     document.getElementById("scoreText").textContent = "-";
     document.getElementById("cefrText").textContent = "-";
-    summaryBox.textContent = "ここにまとめが表示されます。";
+    summaryBox.textContent = "ここにまとめが表示されます。 / The summary will appear here.";
+    speakBtn.classList.remove("speak-ready");
   }
 
   function setLoading(loading) {
@@ -545,14 +568,12 @@
         voices.find(v => v.lang === "en-US") ||
         voices.find(v => v.lang.startsWith("en"));
 
-      if (enVoice) {
-        utter.voice = enVoice;
-      }
+      if (enVoice) utter.voice = enVoice;
 
       speechSynthesis.speak(utter);
     } catch (e) {
       console.log("speakEnglish error:", e);
-      alert("音声再生に失敗しました");
+      alert("音声再生に失敗しました / Audio playback failed.");
     }
   }
 
@@ -560,14 +581,14 @@
     unlockAudio();
 
     if (!conversationHistory.length) {
-      alert("まだAIの会話がありません");
+      alert("まだAIの会話がありません / No AI message yet.");
       return;
     }
 
     const lastAi = [...conversationHistory].reverse().find(item => item.role === "assistant");
 
     if (!lastAi || !lastAi.content) {
-      alert("読み上げるAIメッセージがありません");
+      alert("読み上げるAIメッセージがありません / No AI message to read.");
       return;
     }
 
@@ -580,15 +601,18 @@
     const topic = topicInput.value.trim();
     const roleMode = roleModeSelect.value;
     const level = levelSelect.value;
+    const styleMode = styleModeSelect.value;
     const scenario = scenarioSelect.value;
+    const missionMode = getMissionModeValue();
+    const missionText = missionTextInput.value.trim();
 
     if (!topic) {
-      startMessage.textContent = "テーマを入力してください。";
+      startMessage.textContent = "テーマを入力してください。 / Please enter a topic.";
       return;
     }
 
     setLoading(true);
-    startMessage.textContent = "会話を作成中…";
+    startMessage.textContent = "会話を作成中… / Creating a conversation...";
     sendMessageText.textContent = "";
     clearFeedback();
 
@@ -598,7 +622,10 @@
         topic,
         roleMode,
         level,
-        scenario
+        styleMode,
+        scenario,
+        missionMode,
+        missionText
       });
 
       conversationHistory = Array.isArray(data.history) ? data.history : [];
@@ -607,15 +634,16 @@
       saveState();
 
       userMessageInput.value = "";
-      startMessage.textContent = "会話を始めました。";
+      startMessage.textContent = "会話を始めました。 / Conversation started.";
       sendBtn.disabled = false;
       userMessageInput.focus();
+      speakBtn.classList.add("speak-ready");
     } catch (e) {
       conversationStarted = false;
       conversationHistory = [];
       renderChat();
       clearState();
-      startMessage.textContent = "開始に失敗しました。\n" + e.message;
+      startMessage.textContent = "開始に失敗しました。 / Failed to start.\\n" + e.message;
     } finally {
       setLoading(false);
     }
@@ -627,21 +655,25 @@
     const topic = topicInput.value.trim();
     const roleMode = roleModeSelect.value;
     const level = levelSelect.value;
+    const styleMode = styleModeSelect.value;
     const scenario = scenarioSelect.value;
+    const missionMode = getMissionModeValue();
+    const missionText = missionTextInput.value.trim();
     const userMessage = userMessageInput.value.trim();
 
     if (!conversationStarted) {
-      sendMessageText.textContent = "先に「会話を始める」を押してください。";
+      sendMessageText.textContent = "先に「会話を始める」を押してください。 / Please start the conversation first.";
       return;
     }
 
     if (!userMessage) {
-      sendMessageText.textContent = "英語を入力してください。";
+      sendMessageText.textContent = "英語を入力してください。 / Please enter some English.";
       return;
     }
 
     setLoading(true);
-    sendMessageText.textContent = "送信中…";
+    sendMessageText.textContent = "送信中… / Sending...";
+    speakBtn.classList.remove("speak-ready");
 
     try {
       const data = await postApi({
@@ -649,7 +681,10 @@
         topic,
         roleMode,
         level,
+        styleMode,
         scenario,
+        missionMode,
+        missionText,
         userMessage,
         history: conversationHistory
       });
@@ -659,34 +694,47 @@
       saveState();
 
       document.getElementById("betterText").textContent =
-        data.betterExpression || "取得できませんでした。";
+        data.betterExpression || "取得できませんでした。 / Not available.";
 
       document.getElementById("alternativeText").textContent =
-        data.alternativeExpression || "取得できませんでした。";
+        data.alternativeExpression || "取得できませんでした。 / Not available.";
 
+      const reasonParts = [
+        data.reasonJa || "",
+        data.reasonEn || ""
+      ].filter(Boolean);
       document.getElementById("reasonText").textContent =
-        data.reasonJa || "取得できませんでした。";
+        reasonParts.join("\\n");
 
       document.getElementById("translationText").textContent =
-        data.translationJa || "取得できませんでした。";
+        data.translationJa || "取得できませんでした。 / Not available.";
 
+      const teacherParts = [
+        data.teacherCommentJa || "",
+        data.teacherCommentEn || ""
+      ].filter(Boolean);
       document.getElementById("teacherCommentText").textContent =
-        data.teacherCommentJa || "取得できませんでした。";
+        teacherParts.join("\\n");
 
+      const studyParts = [
+        data.studyPointJa || "",
+        data.studyPointEn || ""
+      ].filter(Boolean);
       document.getElementById("studyPointText").textContent =
-        data.studyPointJa || "取得できませんでした。";
+        studyParts.join("\\n");
 
       document.getElementById("scoreText").textContent =
-        (data.score ?? "-");
+        data.score ?? "-";
 
       document.getElementById("cefrText").textContent =
         data.cefr || "-";
 
       userMessageInput.value = "";
-      sendMessageText.textContent = "送信しました。";
+      sendMessageText.textContent = "送信しました。 / Sent.";
       userMessageInput.focus();
+      speakBtn.classList.add("speak-ready");
     } catch (e) {
-      sendMessageText.textContent = "送信に失敗しました。\n" + e.message;
+      sendMessageText.textContent = "送信に失敗しました。 / Failed to send.\\n" + e.message;
     } finally {
       setLoading(false);
     }
@@ -696,15 +744,18 @@
     const topic = topicInput.value.trim();
     const roleMode = roleModeSelect.value;
     const level = levelSelect.value;
+    const styleMode = styleModeSelect.value;
     const scenario = scenarioSelect.value;
+    const missionMode = getMissionModeValue();
+    const missionText = missionTextInput.value.trim();
 
     if (!conversationStarted || !conversationHistory.length) {
-      summaryBox.textContent = "会話履歴がありません。";
+      summaryBox.textContent = "会話履歴がありません。 / No conversation history.";
       return;
     }
 
     setLoading(true);
-    summaryBox.textContent = "まとめを作成中…";
+    summaryBox.textContent = "まとめを作成中… / Creating a summary...";
 
     try {
       const data = await postApi({
@@ -712,20 +763,26 @@
         topic,
         roleMode,
         level,
+        styleMode,
         scenario,
+        missionMode,
+        missionText,
         history: conversationHistory
       });
 
       const parts = [
-        data.summaryJa ? "【今日のまとめ】\n" + data.summaryJa : "",
-        data.goodPointJa ? "【良かった点】\n" + data.goodPointJa : "",
-        data.nextAdviceJa ? "【次へのアドバイス】\n" + data.nextAdviceJa : "",
-        data.recommendedPhrase ? "【おすすめフレーズ】\n" + data.recommendedPhrase : ""
+        data.summaryJa ? "【今日のまとめ / Summary】\\n" + data.summaryJa : "",
+        data.summaryEn ? data.summaryEn : "",
+        data.goodPointJa ? "\\n【良かった点 / Good Point】\\n" + data.goodPointJa : "",
+        data.goodPointEn ? data.goodPointEn : "",
+        data.nextAdviceJa ? "\\n【次へのアドバイス / Next Advice】\\n" + data.nextAdviceJa : "",
+        data.nextAdviceEn ? data.nextAdviceEn : "",
+        data.recommendedPhrase ? "\\n【おすすめフレーズ / Recommended Phrase】\\n" + data.recommendedPhrase : ""
       ].filter(Boolean);
 
-      summaryBox.textContent = parts.join("\n\n") || "まとめを作成できませんでした。";
+      summaryBox.textContent = parts.join("\\n\\n") || "まとめを作成できませんでした。 / Summary not available.";
     } catch (e) {
-      summaryBox.textContent = "まとめ作成に失敗しました。\n" + e.message;
+      summaryBox.textContent = "まとめ作成に失敗しました。 / Failed to create a summary.\\n" + e.message;
     } finally {
       setLoading(false);
     }
@@ -734,14 +791,15 @@
   function continueConversation() {
     const ok = loadState();
     if (ok) {
-      startMessage.textContent = "前回の会話を読み込みました。";
+      startMessage.textContent = "前回の会話を読み込みました。 / Previous conversation loaded.";
+      speakBtn.classList.add("speak-ready");
     } else {
-      startMessage.textContent = "保存された会話がありません。";
+      startMessage.textContent = "保存された会話がありません。 / No saved conversation.";
     }
   }
 
   function clearConversation() {
-    if (!confirm("会話履歴を消しますか？")) return;
+    if (!confirm("会話履歴を消しますか？ / Clear the conversation history?")) return;
 
     conversationHistory = [];
     conversationStarted = false;
@@ -749,7 +807,7 @@
     clearFeedback();
     clearState();
     userMessageInput.value = "";
-    startMessage.textContent = "会話を消しました。";
+    startMessage.textContent = "会話を消しました。 / Conversation cleared.";
     sendMessageText.textContent = "";
     sendBtn.disabled = true;
   }
@@ -759,7 +817,7 @@
 
     if (!SR) {
       micBtn.disabled = true;
-      micBtn.textContent = "🎤 この端末では未対応";
+      micBtn.textContent = "🎤 この端末では未対応 / Not supported";
       return;
     }
 
@@ -770,26 +828,29 @@
 
     recognition.onstart = () => {
       recognizing = true;
-      micBtn.textContent = "🎤 聞いています…";
-      sendMessageText.textContent = "英語を話してください。";
+      micBtn.textContent = "🎤 聞いています… / Listening...";
+      micBtn.classList.add("listening");
+      sendMessageText.textContent = "英語を話してください。 / Please speak in English.";
     };
 
     recognition.onend = () => {
       recognizing = false;
-      micBtn.textContent = "🎤 音声入力";
+      micBtn.textContent = "🎤 音声入力 / Mic";
+      micBtn.classList.remove("listening");
     };
 
     recognition.onerror = (event) => {
       recognizing = false;
-      micBtn.textContent = "🎤 音声入力";
-      sendMessageText.textContent = "音声入力エラー: " + (event.error || "unknown");
+      micBtn.textContent = "🎤 音声入力 / Mic";
+      micBtn.classList.remove("listening");
+      sendMessageText.textContent = "音声入力エラー / Mic error: " + (event.error || "unknown");
     };
 
     recognition.onresult = (event) => {
       const text = event.results?.[0]?.[0]?.transcript || "";
       if (text) {
         userMessageInput.value = text;
-        sendMessageText.textContent = "音声入力できました。必要なら直して送信してください。";
+        sendMessageText.textContent = "音声入力できました。必要なら直して送信してください。 / Voice input captured. Edit if needed, then send.";
       }
     };
   }
@@ -798,7 +859,7 @@
     unlockAudio();
 
     if (!recognition) {
-      sendMessageText.textContent = "この端末では音声入力に対応していません。";
+      sendMessageText.textContent = "この端末では音声入力に対応していません。 / Speech input is not supported on this device.";
       return;
     }
 
@@ -810,7 +871,7 @@
     try {
       recognition.start();
     } catch (e) {
-      sendMessageText.textContent = "音声入力を開始できませんでした。";
+      sendMessageText.textContent = "音声入力を開始できませんでした。 / Could not start speech input.";
     }
   }
 
@@ -836,6 +897,7 @@
     loadState();
     if (conversationStarted) {
       sendBtn.disabled = false;
+      speakBtn.classList.add("speak-ready");
     }
     if (window.speechSynthesis) {
       window.speechSynthesis.getVoices();
