@@ -188,7 +188,7 @@
     }
 
     if (!res.ok) {
-      throw new Error(data.error || data.detail || "通信エラーです");
+      throw new Error(data.detail || data.error || "通信エラーです");
     }
 
     return data;
