@@ -1,7 +1,7 @@
 {
   "name": "AI×I",
   "short_name": "AI×I",
-  "start_url": "/",
+  "start_url": "/ai-i-simple/index.html",
   "display": "standalone",
   "background_color": "#f5f7fb",
   "theme_color": "#4f46e5",
