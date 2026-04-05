@@ -125,7 +125,6 @@
     }
 
     .chat-box {
-      white-space: pre-wrap;
       line-height: 1.8;
       background: var(--soft);
       border: 1px solid var(--line);
@@ -134,16 +133,17 @@
       min-height: 180px;
       max-height: 420px;
       overflow-y: auto;
+      word-break: break-word;
     }
 
     .result-block {
-      white-space: pre-wrap;
       line-height: 1.7;
       background: var(--soft);
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 12px;
       min-height: 60px;
+      word-break: break-word;
     }
 
     .score-box {
@@ -418,6 +418,23 @@
   const chatBox = document.getElementById("chatBox");
   const summaryBox = document.getElementById("summaryBox");
 
+  function escapeHtml(text) {
+    return String(text || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function formatMultiline(text) {
+    return escapeHtml(String(text || "")).replace(/\n/g, "<br>");
+  }
+
+  function setHtmlById(id, text) {
+    document.getElementById(id).innerHTML = formatMultiline(text);
+  }
+
   function getMissionModeValue() {
     return missionModeSelect.value === "on";
   }
@@ -434,12 +451,12 @@
       history: conversationHistory,
       started: conversationStarted
     };
-    localStorage.setItem("aixi_state_v4", JSON.stringify(data));
+    localStorage.setItem("aixi_state_v5", JSON.stringify(data));
   }
 
   function loadState() {
     try {
-      const raw = localStorage.getItem("aixi_state_v4");
+      const raw = localStorage.getItem("aixi_state_v5");
       if (!raw) return false;
 
       const data = JSON.parse(raw);
@@ -462,7 +479,7 @@
   }
 
   function clearState() {
-    localStorage.removeItem("aixi_state_v4");
+    localStorage.removeItem("aixi_state_v5");
   }
 
   async function postApi(payload) {
@@ -499,7 +516,7 @@
 
   function renderChat() {
     if (!conversationHistory.length) {
-      chatBox.textContent = "ここに会話が表示されます。 / The conversation will appear here.";
+      setHtmlById("chatBox", "ここに会話が表示されます。 / The conversation will appear here.");
       return;
     }
 
@@ -509,20 +526,20 @@
       return item.content;
     });
 
-    chatBox.textContent = lines.join("\\n\\n");
+    setHtmlById("chatBox", lines.join("\n\n"));
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
   function clearFeedback() {
-    document.getElementById("betterText").textContent = "ここに表示されます。 / The result will appear here.";
-    document.getElementById("alternativeText").textContent = "ここに表示されます。 / The result will appear here.";
-    document.getElementById("reasonText").textContent = "ここに表示されます。 / The result will appear here.";
-    document.getElementById("translationText").textContent = "ここに表示されます。 / The result will appear here.";
-    document.getElementById("teacherCommentText").textContent = "ここに表示されます。 / The result will appear here.";
-    document.getElementById("studyPointText").textContent = "ここに表示されます。 / The result will appear here.";
+    setHtmlById("betterText", "ここに表示されます。 / The result will appear here.");
+    setHtmlById("alternativeText", "ここに表示されます。 / The result will appear here.");
+    setHtmlById("reasonText", "ここに表示されます。 / The result will appear here.");
+    setHtmlById("translationText", "ここに表示されます。 / The result will appear here.");
+    setHtmlById("teacherCommentText", "ここに表示されます。 / The result will appear here.");
+    setHtmlById("studyPointText", "ここに表示されます。 / The result will appear here.");
     document.getElementById("scoreText").textContent = "-";
     document.getElementById("cefrText").textContent = "-";
-    summaryBox.textContent = "ここにまとめが表示されます。 / The summary will appear here.";
+    setHtmlById("summaryBox", "ここにまとめが表示されます。 / The summary will appear here.");
     speakBtn.classList.remove("speak-ready");
   }
 
@@ -643,7 +660,7 @@
       conversationHistory = [];
       renderChat();
       clearState();
-      startMessage.textContent = "開始に失敗しました。 / Failed to start.\\n" + e.message;
+      startMessage.textContent = "開始に失敗しました。 / Failed to start.\n" + e.message;
     } finally {
       setLoading(false);
     }
@@ -693,48 +710,38 @@
       renderChat();
       saveState();
 
-      document.getElementById("betterText").textContent =
-        data.betterExpression || "取得できませんでした。 / Not available.";
-
-      document.getElementById("alternativeText").textContent =
-        data.alternativeExpression || "取得できませんでした。 / Not available.";
+      setHtmlById("betterText", data.betterExpression || "取得できませんでした。 / Not available.");
+      setHtmlById("alternativeText", data.alternativeExpression || "取得できませんでした。 / Not available.");
 
       const reasonParts = [
         data.reasonJa || "",
         data.reasonEn || ""
       ].filter(Boolean);
-      document.getElementById("reasonText").textContent =
-        reasonParts.join("\\n");
+      setHtmlById("reasonText", reasonParts.join("\n"));
 
-      document.getElementById("translationText").textContent =
-        data.translationJa || "取得できませんでした。 / Not available.";
+      setHtmlById("translationText", data.translationJa || "取得できませんでした。 / Not available.");
 
       const teacherParts = [
         data.teacherCommentJa || "",
         data.teacherCommentEn || ""
       ].filter(Boolean);
-      document.getElementById("teacherCommentText").textContent =
-        teacherParts.join("\\n");
+      setHtmlById("teacherCommentText", teacherParts.join("\n"));
 
       const studyParts = [
         data.studyPointJa || "",
         data.studyPointEn || ""
       ].filter(Boolean);
-      document.getElementById("studyPointText").textContent =
-        studyParts.join("\\n");
+      setHtmlById("studyPointText", studyParts.join("\n"));
 
-      document.getElementById("scoreText").textContent =
-        data.score ?? "-";
-
-      document.getElementById("cefrText").textContent =
-        data.cefr || "-";
+      document.getElementById("scoreText").textContent = data.score ?? "-";
+      document.getElementById("cefrText").textContent = data.cefr || "-";
 
       userMessageInput.value = "";
       sendMessageText.textContent = "送信しました。 / Sent.";
       userMessageInput.focus();
       speakBtn.classList.add("speak-ready");
     } catch (e) {
-      sendMessageText.textContent = "送信に失敗しました。 / Failed to send.\\n" + e.message;
+      sendMessageText.textContent = "送信に失敗しました。 / Failed to send.\n" + e.message;
     } finally {
       setLoading(false);
     }
@@ -750,12 +757,12 @@
     const missionText = missionTextInput.value.trim();
 
     if (!conversationStarted || !conversationHistory.length) {
-      summaryBox.textContent = "会話履歴がありません。 / No conversation history.";
+      setHtmlById("summaryBox", "会話履歴がありません。 / No conversation history.");
       return;
     }
 
     setLoading(true);
-    summaryBox.textContent = "まとめを作成中… / Creating a summary...";
+    setHtmlById("summaryBox", "まとめを作成中… / Creating a summary...");
 
     try {
       const data = await postApi({
@@ -771,18 +778,18 @@
       });
 
       const parts = [
-        data.summaryJa ? "【今日のまとめ / Summary】\\n" + data.summaryJa : "",
+        data.summaryJa ? "【今日のまとめ / Summary】\n" + data.summaryJa : "",
         data.summaryEn ? data.summaryEn : "",
-        data.goodPointJa ? "\\n【良かった点 / Good Point】\\n" + data.goodPointJa : "",
+        data.goodPointJa ? "\n【良かった点 / Good Point】\n" + data.goodPointJa : "",
         data.goodPointEn ? data.goodPointEn : "",
-        data.nextAdviceJa ? "\\n【次へのアドバイス / Next Advice】\\n" + data.nextAdviceJa : "",
+        data.nextAdviceJa ? "\n【次へのアドバイス / Next Advice】\n" + data.nextAdviceJa : "",
         data.nextAdviceEn ? data.nextAdviceEn : "",
-        data.recommendedPhrase ? "\\n【おすすめフレーズ / Recommended Phrase】\\n" + data.recommendedPhrase : ""
+        data.recommendedPhrase ? "\n【おすすめフレーズ / Recommended Phrase】\n" + data.recommendedPhrase : ""
       ].filter(Boolean);
 
-      summaryBox.textContent = parts.join("\\n\\n") || "まとめを作成できませんでした。 / Summary not available.";
+      setHtmlById("summaryBox", parts.join("\n\n") || "まとめを作成できませんでした。 / Summary not available.");
     } catch (e) {
-      summaryBox.textContent = "まとめ作成に失敗しました。 / Failed to create a summary.\\n" + e.message;
+      setHtmlById("summaryBox", "まとめ作成に失敗しました。 / Failed to create a summary.\n" + e.message);
     } finally {
       setLoading(false);
     }
