@@ -152,10 +152,11 @@
     }
 
     .ideal-box{
+      position:relative;
       border:1px solid #cde7d7;
       background:var(--good);
       border-radius:16px;
-      padding:14px;
+      padding:14px 58px 14px 14px;
       line-height:1.7;
       word-break:break-word;
       margin-bottom:10px;
@@ -229,6 +230,7 @@
     <div class="ideal-box">
       <div class="scene-title">理想的な返事 / Ideal reply</div>
       <div id="idealReplyText">ここに理想的な返事が表示されます。</div>
+      <button id="speakIdealBtn" class="speaker-btn" type="button">📣</button>
     </div>
 
     <div class="small-message" id="hintText"></div>
@@ -243,6 +245,8 @@
       <button id="retryBtn" type="button">Retry</button>
       <button id="clearBtn" type="button" class="danger">Clear</button>
     </div>
+
+    <button id="nextBtn" type="button">Next</button>
 
     <div id="recognizedText" class="small-message"></div>
   </div>
@@ -277,11 +281,13 @@
   const hintText = document.getElementById("hintText");
 
   const speakAiBtn = document.getElementById("speakAiBtn");
+  const speakIdealBtn = document.getElementById("speakIdealBtn");
 
   const readTargetBox = document.getElementById("readTargetBox");
   const micBtn = document.getElementById("micBtn");
   const retryBtn = document.getElementById("retryBtn");
   const clearBtn = document.getElementById("clearBtn");
+  const nextBtn = document.getElementById("nextBtn");
   const recognizedText = document.getElementById("recognizedText");
 
   const scoreBox = document.getElementById("scoreBox");
@@ -423,6 +429,11 @@
     scoreBox.innerHTML = html;
   }
 
+  function resetEvaluationOnly() {
+    recognizedText.textContent = "";
+    scoreBox.innerHTML = `<div class="big-score">-</div><div id="scoreComment">ここに評価が表示されます。</div>`;
+  }
+
   function clearAll() {
     currentScene = null;
     startMessage.textContent = "";
@@ -431,8 +442,7 @@
     idealReplyText.textContent = "ここに理想的な返事が表示されます。";
     hintText.textContent = "";
     readTargetBox.value = "";
-    recognizedText.textContent = "";
-    scoreBox.innerHTML = `<div class="big-score">-</div><div id="scoreComment">ここに評価が表示されます。</div>`;
+    resetEvaluationOnly();
   }
 
   async function startScene() {
@@ -445,6 +455,7 @@
     }
 
     startBtn.disabled = true;
+    nextBtn.disabled = true;
     startMessage.textContent = "場面を作成中…";
 
     try {
@@ -459,13 +470,13 @@
       idealReplyText.textContent = data.idealReply || "";
       hintText.textContent = data.hintJa || "";
       readTargetBox.value = data.idealReply || "";
-      recognizedText.textContent = "";
-      scoreBox.innerHTML = `<div class="big-score">-</div><div id="scoreComment">ここに評価が表示されます。</div>`;
+      resetEvaluationOnly();
       startMessage.textContent = "新しい場面を作りました。";
     } catch (e) {
       startMessage.textContent = "開始に失敗しました\n" + e.message;
     } finally {
       startBtn.disabled = false;
+      nextBtn.disabled = false;
     }
   }
 
@@ -540,15 +551,16 @@
 
   function retryScene() {
     if (!currentScene) return;
-    recognizedText.textContent = "";
-    scoreBox.innerHTML = `<div class="big-score">-</div><div id="scoreComment">ここに評価が表示されます。</div>`;
+    resetEvaluationOnly();
   }
 
   startBtn.addEventListener("click", startScene);
   speakAiBtn.addEventListener("click", () => speakEnglish(aiLineText.textContent));
+  speakIdealBtn.addEventListener("click", () => speakEnglish(idealReplyText.textContent));
   micBtn.addEventListener("click", startReading);
   retryBtn.addEventListener("click", retryScene);
   clearBtn.addEventListener("click", clearAll);
+  nextBtn.addEventListener("click", startScene);
 
   window.addEventListener("load", () => {
     setupSpeechRecognition();
