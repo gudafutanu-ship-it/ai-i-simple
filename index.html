@@ -181,6 +181,7 @@
       height:50px;
       border-radius:999px;
       padding:0;
+      margin:0;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -329,6 +330,7 @@
 
   let currentScene = null;
   let usedAiLines = [];
+  let step = 0;
   let recognition = null;
   let recognizing = false;
   let audioUnlocked = false;
@@ -498,6 +500,7 @@
   function clearAll() {
     currentScene = null;
     usedAiLines = [];
+    step = 0;
     startMessage.textContent = "";
     situationText.textContent = "ここに場面が表示されます。";
     aiLineText.textContent = "Startを押すと表示されます。";
@@ -516,6 +519,8 @@
       return;
     }
 
+    step += 1;
+
     startBtn.disabled = true;
     nextBtn.disabled = true;
     startMessage.textContent = "場面を作成中…";
@@ -524,7 +529,8 @@
       const data = await postApi({
         action: "generate_scene",
         topic,
-        lastAiLines: usedAiLines
+        lastAiLines: usedAiLines,
+        step
       });
 
       currentScene = data;
@@ -544,6 +550,7 @@
       resetEvaluationOnly();
       startMessage.textContent = "新しい場面を作りました。";
     } catch (e) {
+      step = Math.max(0, step - 1);
       startMessage.textContent = "開始に失敗しました\n" + e.message;
     } finally {
       startBtn.disabled = false;
