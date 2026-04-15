@@ -1,247 +1,644 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-  <link rel="apple-touch-icon" href="icon-new-192.png">
-<link rel="icon" href="icon-new-192.png">
-<link rel="manifest" href="manifest.json">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI×I</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AI×I</title>
 
-<style>
-body{
-  font-family:sans-serif;
-  background:#f5f5f5;
-  margin:0;
-  padding:10px;
-}
+  <link rel="manifest" href="manifest-v2.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icon_new-192.png">
 
-.card{
-  background:#fff;
-  border-radius:15px;
-  padding:15px;
-  margin-bottom:10px;
-}
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --line:#e5e7eb;
+      --accent:#4f46e5;
+      --accent2:#5b52f5;
+      --soft:#f8fafc;
+      --green:#dff5e8;
+      --warn:#fff7ed;
+      --danger:#d63a3a;
+    }
 
-button{
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:#4f46e5;
-  color:#fff;
-  font-size:16px;
-}
+    *{box-sizing:border-box}
 
-.row{
-  display:flex;
-  gap:6px;
-}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif;
+    }
 
-textarea{
-  width:100%;
-  height:80px;
-  border-radius:10px;
-}
+    .container{
+      max-width:760px;
+      margin:0 auto;
+      padding:14px;
+    }
 
-.line{
-  background:#eee;
-  padding:12px;
-  border-radius:12px;
-  position:relative;
-}
+    h1{
+      text-align:center;
+      font-size:34px;
+      margin:18px 0 14px;
+      letter-spacing:1px;
+    }
 
-.speaker{
-  position:absolute;
-  right:10px;
-  bottom:10px;
-}
+    .card{
+      background:var(--card);
+      border-radius:22px;
+      padding:16px;
+      margin-bottom:14px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
 
-.good{
-  background:#d1fae5;
-}
+    .label{
+      display:block;
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
 
-</style>
+    input, select, textarea, button{
+      width:100%;
+      font-size:16px;
+      padding:14px;
+      border-radius:16px;
+      border:1px solid #d3d6de;
+      margin:0;
+      font-family:inherit;
+    }
+
+    input, select, textarea{
+      background:#fff;
+    }
+
+    textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    button{
+      border:none;
+      color:#fff;
+      font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+    }
+
+    button:disabled{
+      opacity:.6;
+    }
+
+    .setup-grid{
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:10px;
+      align-items:start;
+    }
+
+    .left-stack{
+      display:grid;
+      gap:10px;
+    }
+
+    .right-stack{
+      display:grid;
+      gap:10px;
+    }
+
+    .start-btn{
+      min-height:106px;
+      font-size:18px;
+    }
+
+    .message{
+      font-size:14px;
+      color:var(--muted);
+      white-space:pre-wrap;
+      margin-top:8px;
+    }
+
+    .scene-box,
+    .line-box,
+    .ideal-box,
+    .score-box{
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .scene-box{
+      background:var(--soft);
+      border:1px solid var(--line);
+      margin-bottom:10px;
+    }
+
+    .line-box{
+      position:relative;
+      background:var(--soft);
+      border:1px solid var(--line);
+      padding-right:72px;
+      margin-bottom:10px;
+      min-height:108px;
+    }
+
+    .ideal-box{
+      position:relative;
+      background:var(--green);
+      border:1px solid #c7e6d4;
+      padding-right:72px;
+      min-height:108px;
+      margin-bottom:10px;
+    }
+
+    .title-mini{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .main-text{
+      font-size:22px;
+      line-height:1.45;
+      word-break:break-word;
+    }
+
+    .hint{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .speaker-btn{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      width:50px;
+      height:50px;
+      border-radius:999px;
+      padding:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#fff;
+    }
+
+    .button-row{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .next-btn{
+      margin-top:10px;
+    }
+
+    .danger{
+      background:linear-gradient(135deg,#c62828,var(--danger));
+    }
+
+    .score-box{
+      background:var(--warn);
+      border:1px solid #f4cfa5;
+    }
+
+    .big-score{
+      font-size:34px;
+      font-weight:800;
+      color:#9a3412;
+      margin-bottom:8px;
+    }
+
+    .score-line{
+      margin-top:10px;
+      padding-top:10px;
+      border-top:1px solid #f0caa4;
+      line-height:1.7;
+      word-break:break-word;
+    }
+
+    .recognized{
+      font-size:14px;
+      color:var(--muted);
+      margin-top:10px;
+      white-space:pre-wrap;
+    }
+
+    .listening{
+      outline:3px solid #f59e0b;
+    }
+
+    @media (max-width:700px){
+      .setup-grid{
+        grid-template-columns:1fr;
+      }
+
+      .start-btn{
+        min-height:auto;
+      }
+
+      .main-text{
+        font-size:20px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+<div class="container">
 
-<h2 style="text-align:center;">AI×I</h2>
+  <h1>AI×I</h1>
 
-<div class="card">
-<input id="passcodeInput" placeholder="passcode">
+  <div class="card">
+    <div class="setup-grid">
+      <div class="left-stack">
+        <input id="passcodeInput" type="password" placeholder="passcode">
+        <input id="topicInput" type="text" placeholder="自由入力 / custom topic">
+      </div>
 
-<select id="topicPresetSelect">
-<option value="coffee shop">喫茶店</option>
-<option value="restaurant">レストラン</option>
-<option value="school">学校</option>
-<option value="travel">旅行</option>
-<option value="shopping">買い物</option>
-<option value="hospital">病院</option>
-</select>
+      <div class="right-stack">
+        <select id="topicPresetSelect">
+          <option value="coffee shop" selected>喫茶店</option>
+          <option value="restaurant">レストラン</option>
+          <option value="school">学校</option>
+          <option value="travel">旅行</option>
+          <option value="shopping">買い物</option>
+          <option value="hospital">病院</option>
+        </select>
+        <button id="startBtn" class="start-btn" type="button">Start</button>
+      </div>
+    </div>
 
-<input id="topicInput" placeholder="自由入力">
+    <div id="startMessage" class="message"></div>
+  </div>
 
-<button id="startBtn">Start</button>
-<div id="startMessage"></div>
-</div>
+  <div class="card">
+    <div class="scene-box">
+      <div class="title-mini">場面 / Situation</div>
+      <div id="situationText">ここに場面が表示されます。</div>
+    </div>
 
-<div class="card">
+    <div class="line-box">
+      <div class="title-mini">相手の英語 / What you hear</div>
+      <div id="aiLineText" class="main-text">Startを押すと表示されます。</div>
+      <button id="speakAiBtn" class="speaker-btn" type="button">📣</button>
+    </div>
 
-<div class="line">
-<div>What you hear</div>
-<div id="aiLineText"></div>
-<button id="speakAiBtn" class="speaker">📣</button>
-</div>
+    <div class="ideal-box">
+      <div class="title-mini">理想的な返事 / Ideal reply</div>
+      <div id="idealReplyText" class="main-text">ここに理想的な返事が表示されます。</div>
+      <button id="speakIdealBtn" class="speaker-btn" type="button">📣</button>
+    </div>
 
-<div class="line good">
-<div>Ideal reply</div>
-<div id="idealReplyText"></div>
-<button id="speakIdealBtn" class="speaker">📣</button>
-</div>
+    <div id="hintText" class="hint"></div>
+  </div>
 
-</div>
+  <div class="card">
+    <label class="label">あなたが読む英文 / Read this aloud</label>
+    <textarea id="readTargetBox" readonly></textarea>
 
-<div class="card">
+    <div class="button-row">
+      <button id="micBtn" type="button">🎤 Read</button>
+      <button id="retryBtn" type="button">Retry</button>
+      <button id="clearBtn" class="danger" type="button">Clear</button>
+    </div>
 
-<textarea id="readTargetBox"></textarea>
+    <button id="nextBtn" class="next-btn" type="button">Next</button>
 
-<div class="row">
-<button id="micBtn">🎤</button>
-<button id="retryBtn">Retry</button>
-<button id="clearBtn">Clear</button>
-</div>
+    <div id="recognizedText" class="recognized"></div>
+  </div>
 
-<button id="nextBtn">Next</button>
+  <div class="card">
+    <div class="title-mini">評価 / Evaluation</div>
+    <div id="scoreBox" class="score-box">
+      <div class="big-score">-</div>
+      <div>ここに評価が表示されます。</div>
+    </div>
+  </div>
 
-<div id="recognizedText"></div>
-
-</div>
-
-<div class="card">
-<div id="scoreBox">-</div>
 </div>
 
 <script>
+  const API_URL = "https://ai-i-worker.gudafutanu.workers.dev";
 
-const API_URL = "https://ai-i-worker.gudafutanu.workers.dev";
+  let currentScene = null;
+  let usedAiLines = [];
+  let recognition = null;
+  let recognizing = false;
+  let audioUnlocked = false;
 
-// ⭐ ここが今回のコア
-let usedAiLines = [];
+  const passcodeInput = document.getElementById("passcodeInput");
+  const topicPresetSelect = document.getElementById("topicPresetSelect");
+  const topicInput = document.getElementById("topicInput");
+  const startBtn = document.getElementById("startBtn");
+  const startMessage = document.getElementById("startMessage");
 
-let currentScene = null;
-let recognition = null;
+  const situationText = document.getElementById("situationText");
+  const aiLineText = document.getElementById("aiLineText");
+  const idealReplyText = document.getElementById("idealReplyText");
+  const hintText = document.getElementById("hintText");
 
-const passcodeInput = document.getElementById("passcodeInput");
-const topicPresetSelect = document.getElementById("topicPresetSelect");
-const topicInput = document.getElementById("topicInput");
+  const speakAiBtn = document.getElementById("speakAiBtn");
+  const speakIdealBtn = document.getElementById("speakIdealBtn");
 
-const aiLineText = document.getElementById("aiLineText");
-const idealReplyText = document.getElementById("idealReplyText");
+  const readTargetBox = document.getElementById("readTargetBox");
+  const micBtn = document.getElementById("micBtn");
+  const retryBtn = document.getElementById("retryBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const recognizedText = document.getElementById("recognizedText");
+  const scoreBox = document.getElementById("scoreBox");
 
-const readTargetBox = document.getElementById("readTargetBox");
-const recognizedText = document.getElementById("recognizedText");
+  function getTopicValue() {
+    const custom = topicInput.value.trim();
+    if (custom) return custom;
+    return topicPresetSelect.value.trim();
+  }
 
-const scoreBox = document.getElementById("scoreBox");
+  async function postApi(payload) {
+    const passcode = passcodeInput.value.trim();
 
-function getTopic(){
-  return topicInput.value || topicPresetSelect.value;
-}
+    if (!passcode) {
+      throw new Error("パスコードを入力してください");
+    }
 
-async function postApi(data){
-  const res = await fetch(API_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      ...data,
-      passcode:passcodeInput.value
-    })
-  });
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...payload,
+        passcode
+      })
+    });
 
-  return res.json();
-}
+    let data = {};
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("JSONエラー");
+    }
 
-async function startScene(){
+    if (!res.ok) {
+      throw new Error(data.detail || data.error || "通信エラー");
+    }
 
-  const topic = getTopic();
+    return data;
+  }
 
-  const data = await postApi({
-    action:"generate_scene",
-    topic,
-    lastAiLines:usedAiLines   // ⭐ここ重要
-  });
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
 
-  currentScene = data;
+    try {
+      const u = new SpeechSynthesisUtterance(" ");
+      u.volume = 0;
+      u.lang = "en-US";
+      speechSynthesis.speak(u);
+      speechSynthesis.cancel();
+    } catch (e) {}
+  }
 
-  aiLineText.textContent = data.aiLine;
-  idealReplyText.textContent = data.idealReply;
+  function speakEnglish(text) {
+    if (!text) return;
 
-  readTargetBox.value = data.idealReply;
+    try {
+      unlockAudio();
+      speechSynthesis.cancel();
 
-  // ⭐履歴保存（最大5件）
-  if(data.aiLine){
-    usedAiLines.push(data.aiLine);
-    if(usedAiLines.length > 5){
-      usedAiLines.shift();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-US";
+      utter.rate = 0.95;
+      utter.pitch = 1.0;
+      utter.volume = 1.0;
+
+      const voices = speechSynthesis.getVoices();
+      const enVoice =
+        voices.find(v => v.lang === "en-US") ||
+        voices.find(v => v.lang.startsWith("en"));
+
+      if (enVoice) utter.voice = enVoice;
+
+      speechSynthesis.speak(utter);
+    } catch (e) {
+      alert("音声再生に失敗しました");
     }
   }
 
-}
+  function normalizeText(text) {
+    return String(text || "")
+      .toLowerCase()
+      .replace(/[.,!?;:'"]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
-function speak(text){
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US";
-  speechSynthesis.speak(u);
-}
+  function levenshtein(a, b) {
+    const matrix = Array.from({ length: b.length + 1 }, () => []);
+    for (let i = 0; i <= b.length; i++) matrix[i][0] = i;
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
 
-document.getElementById("startBtn").onclick = startScene;
-document.getElementById("nextBtn").onclick = startScene;
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
+          );
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  }
 
-document.getElementById("speakAiBtn").onclick = () => speak(aiLineText.textContent);
-document.getElementById("speakIdealBtn").onclick = () => speak(idealReplyText.textContent);
+  function scoreSentence(recognized, target) {
+    const a = normalizeText(recognized);
+    const b = normalizeText(target);
 
-document.getElementById("clearBtn").onclick = () => {
-  usedAiLines = [];   // ⭐完全リセット
-  aiLineText.textContent = "";
-  idealReplyText.textContent = "";
-  readTargetBox.value = "";
-  recognizedText.textContent = "";
-  scoreBox.textContent = "-";
-};
+    if (!a || !b) return 0;
 
-document.getElementById("retryBtn").onclick = () => {
-  recognizedText.textContent = "";
-  scoreBox.textContent = "-";
-};
+    const distance = levenshtein(a, b);
+    const maxLen = Math.max(a.length, b.length);
+    return Math.max(0, Math.round((1 - distance / maxLen) * 100));
+  }
 
-// ===== 音声認識 =====
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function scoreComment(score) {
+    if (score >= 95) return "Excellent! かなり自然です。";
+    if (score >= 85) return "Very good! かなり近いです。";
+    if (score >= 70) return "Good! もう一回読むともっと良くなります。";
+    if (score >= 50) return "もう少しです。理想文を見て、ゆっくりもう一度。";
+    return "まだ差があります。📣を聞いて、理想文をそのまま読んでみましょう。";
+  }
 
-if(SR){
-  recognition = new SR();
-  recognition.lang = "en-US";
+  function renderScore(score, recognized, target) {
+    scoreBox.innerHTML = `
+      <div class="big-score">${score}</div>
+      <div>${scoreComment(score)}</div>
+      <div class="score-line"><strong>認識結果 / Recognized:</strong><br>${recognized || "-"}</div>
+      <div class="score-line"><strong>理想文 / Target:</strong><br>${target || "-"}</div>
+    `;
+  }
 
-  recognition.onresult = (e)=>{
-    const text = e.results[0][0].transcript;
-    recognizedText.textContent = text;
+  function resetEvaluationOnly() {
+    recognizedText.textContent = "";
+    scoreBox.innerHTML = `
+      <div class="big-score">-</div>
+      <div>ここに評価が表示されます。</div>
+    `;
+  }
 
-    const target = readTargetBox.value;
+  function clearAll() {
+    currentScene = null;
+    usedAiLines = [];
+    startMessage.textContent = "";
+    situationText.textContent = "ここに場面が表示されます。";
+    aiLineText.textContent = "Startを押すと表示されます。";
+    idealReplyText.textContent = "ここに理想的な返事が表示されます。";
+    hintText.textContent = "";
+    readTargetBox.value = "";
+    resetEvaluationOnly();
+  }
 
-    let score = 0;
-    if(text.toLowerCase() === target.toLowerCase()){
-      score = 100;
-    } else {
-      score = 70;
+  async function startScene() {
+    unlockAudio();
+    const topic = getTopicValue();
+
+    if (!topic) {
+      startMessage.textContent = "場面を入力してください";
+      return;
     }
 
-    scoreBox.textContent = score;
-  };
-}
+    startBtn.disabled = true;
+    nextBtn.disabled = true;
+    startMessage.textContent = "場面を作成中…";
 
-document.getElementById("micBtn").onclick = ()=>{
-  recognition && recognition.start();
-};
+    try {
+      const data = await postApi({
+        action: "generate_scene",
+        topic,
+        lastAiLines: usedAiLines
+      });
 
+      currentScene = data;
+
+      if (data.aiLine) {
+        usedAiLines.push(data.aiLine);
+        if (usedAiLines.length > 5) {
+          usedAiLines.shift();
+        }
+      }
+
+      situationText.textContent = data.situationJa || "";
+      aiLineText.textContent = data.aiLine || "";
+      idealReplyText.textContent = data.idealReply || "";
+      hintText.textContent = data.hintJa || "";
+      readTargetBox.value = data.idealReply || "";
+      resetEvaluationOnly();
+      startMessage.textContent = "新しい場面を作りました。";
+    } catch (e) {
+      startMessage.textContent = "開始に失敗しました\n" + e.message;
+    } finally {
+      startBtn.disabled = false;
+      nextBtn.disabled = false;
+    }
+  }
+
+  function setupSpeechRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SR) {
+      micBtn.disabled = true;
+      micBtn.textContent = "未対応";
+      return;
+    }
+
+    recognition = new SR();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      recognizing = true;
+      micBtn.textContent = "Listening...";
+      micBtn.classList.add("listening");
+      recognizedText.textContent = "読んでください…";
+    };
+
+    recognition.onend = () => {
+      recognizing = false;
+      micBtn.textContent = "🎤 Read";
+      micBtn.classList.remove("listening");
+    };
+
+    recognition.onerror = (event) => {
+      recognizing = false;
+      micBtn.textContent = "🎤 Read";
+      micBtn.classList.remove("listening");
+      recognizedText.textContent = "音声入力エラー: " + (event.error || "unknown");
+    };
+
+    recognition.onresult = (event) => {
+      const spoken = event.results?.[0]?.[0]?.transcript || "";
+      recognizedText.textContent = spoken ? `認識結果: ${spoken}` : "認識できませんでした。";
+
+      const target = readTargetBox.value.trim();
+      const score = scoreSentence(spoken, target);
+      renderScore(score, spoken, target);
+    };
+  }
+
+  function startReading() {
+    unlockAudio();
+
+    if (!currentScene || !readTargetBox.value.trim()) {
+      recognizedText.textContent = "先にStartを押してください。";
+      return;
+    }
+
+    if (!recognition) {
+      recognizedText.textContent = "この端末では音声入力に対応していません。";
+      return;
+    }
+
+    if (recognizing) {
+      recognition.stop();
+      return;
+    }
+
+    try {
+      recognition.start();
+    } catch (e) {
+      recognizedText.textContent = "音声入力を開始できませんでした。";
+    }
+  }
+
+  function retryScene() {
+    if (!currentScene) return;
+    resetEvaluationOnly();
+  }
+
+  startBtn.addEventListener("click", startScene);
+  speakAiBtn.addEventListener("click", () => speakEnglish(aiLineText.textContent));
+  speakIdealBtn.addEventListener("click", () => speakEnglish(idealReplyText.textContent));
+  micBtn.addEventListener("click", startReading);
+  retryBtn.addEventListener("click", retryScene);
+  clearBtn.addEventListener("click", clearAll);
+  nextBtn.addEventListener("click", startScene);
+
+  window.addEventListener("load", () => {
+    setupSpeechRecognition();
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+    }
+  });
 </script>
-
 </body>
 </html>
